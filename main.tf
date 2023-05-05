@@ -21,5 +21,14 @@ resource "azurerm_key_vault" "this" {
     }
   }
 
+  dynamic "contact" {
+    for_each = var.certificate_contacts
+    content {
+      email = contact.value.email
+      name  = contact.value.name
+      phone = contact.value.phone
+    }
+  }
+
   tags = merge(local.tags, var.tags)
 }

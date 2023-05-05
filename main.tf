@@ -22,4 +22,10 @@ resource "azurerm_key_vault" "this" {
   }
 
   tags = merge(local.tags, var.tags)
+
+  lifecycle {
+    ignore_changes = [
+      contact,
+    ]
+  }
 }

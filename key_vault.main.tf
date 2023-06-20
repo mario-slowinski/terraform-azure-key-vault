@@ -14,12 +14,12 @@ resource "azurerm_key_vault" "this" {
   soft_delete_retention_days      = var.soft_delete_retention_days
 
   dynamic "network_acls" {
-    for_each = length(var.network_acls.bypass) > 0 ? toset([1]) : toset([])
+    for_each = var.network_acls.bypass != null ? toset([var.network_acls]) : toset([])
     content {
-      bypass                     = var.network_acls.bypass
-      default_action             = var.network_acls.default_action
-      ip_rules                   = var.network_acls.ip_rules
-      virtual_network_subnet_ids = var.network_acls.virtual_network_subnet_ids
+      bypass                     = network_acls.value.bypass
+      default_action             = network_acls.value.default_action
+      ip_rules                   = network_acls.value.ip_rules
+      virtual_network_subnet_ids = network_acls.value.virtual_network_subnet_ids
     }
   }
 

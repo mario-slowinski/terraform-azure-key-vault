@@ -1,3 +1,9 @@
+variable "key_vault_id" {
+  type        = string
+  description = "The ID of the Key Vault where something should be created."
+  default     = null
+}
+
 variable "name" {
   type        = string
   description = "Specifies the name of the Key Vault."

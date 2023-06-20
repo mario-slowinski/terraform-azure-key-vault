@@ -1,4 +1,6 @@
 resource "azurerm_key_vault" "this" {
+  count = var.key_vault_id == null ? 1 : 0
+
   name                            = coalesce(var.name, local.name)
   location                        = var.location
   resource_group_name             = var.resource_group_name

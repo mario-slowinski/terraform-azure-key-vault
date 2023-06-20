@@ -1,25 +1,19 @@
-variable "key_vault_id" {
-  type        = string
-  description = "The ID of the Key Vault where something should be created."
-  default     = null
-}
-
 variable "name" {
   type        = string
   description = "Specifies the name of the Key Vault."
-  default     = ""
+  default     = null
 }
 
 variable "location" {
   type        = string
   description = "Specifies the supported Azure location where the resource exists."
-  default     = ""
+  default     = null
 }
 
 variable "resource_group_name" {
   type        = string
   description = "The name of the resource group in which to create the Key Vault."
-  default     = ""
+  default     = null
 }
 
 variable "sku_name" {
@@ -35,7 +29,7 @@ variable "sku_name" {
 variable "tenant_id" {
   type        = string
   description = "The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault."
-  default     = ""
+  default     = null
 }
 
 variable "enabled_for_deployment" {
@@ -71,8 +65,8 @@ variable "network_acls" {
   })
   description = "Optional block."
   default = {
-    bypass         = ""
-    default_action = ""
+    bypass         = null
+    default_action = null
   }
 }
 

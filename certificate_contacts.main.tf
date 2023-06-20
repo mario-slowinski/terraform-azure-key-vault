@@ -1,5 +1,5 @@
 resource "azurerm_key_vault_certificate_contacts" "many" {
-  key_vault_id = azurerm_key_vault.this.id
+  key_vault_id = one(azurerm_key_vault.this[*].id)
 
   dynamic "contact" {
     for_each = var.certificate_contacts

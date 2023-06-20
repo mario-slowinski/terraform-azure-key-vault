@@ -42,6 +42,7 @@ variable "certificates" {
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 <<<<<<< Updated upstream
 variable "key_properties" {
@@ -51,6 +52,17 @@ variable "key_properties" {
     key_size   = optional(number) # The size of the key used in the certificate.
     key_type   = string           # Specifies the type of key.
     reuse_key  = bool             # Is the key reusable?
+=======
+variable "certificate__lifetime_action" {
+  type = object({          # Map of lifetime_action arguments.
+    action = object({      # A action block
+      action_type = string #  The Type of action to be performed when the lifetime trigger is triggered.
+    })
+    trigger = object({                       # A trigger block.
+      days_before_expiry  = optional(number) #  The number of days before the Certificate expires that the action associated with this Trigger should run.
+      lifetime_percentage = optional(number) # The percentage at which during the Certificates Lifetime the action associated with this Trigger should run.
+    })
+>>>>>>> Stashed changes
   })
   default = {
     action = {

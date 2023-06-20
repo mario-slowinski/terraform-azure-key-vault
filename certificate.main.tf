@@ -28,12 +28,16 @@ resource "azurerm_key_vault_certificate" "imported" {
       key_size   = each.value.key_properties.key_size
       reuse_key  = each.value.key_properties.reuse_key
     }
-    lifetime_action {
-      action {
-        action_type = var.lifetime_action.action_type
-      }
-      trigger {
-        days_before_expiry = var.lifetime_action.days_before_expiry
+    dynamic "lifetime_action" {
+      for_each = toset([merge(var.certificate__lifetime_action, each.value.lifetime_action)])
+      content {
+        action {
+          action_type = lifetime_action.value.action.action_type
+        }
+        trigger {
+          days_before_expiry  = lifetime_action.value.trigger.days_before_expiry
+          lifetime_percentage = lifetime_action.value.trigger.lifetime_percentage
+        }
       }
     }
     secret_properties {

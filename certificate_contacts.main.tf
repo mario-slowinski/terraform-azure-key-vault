@@ -1,16 +1,19 @@
-resource "azurerm_key_vault_certificate_contacts" "many" {
-  key_vault_id = one(azurerm_key_vault.this[*].id)
-
-  dynamic "contact" {
-    for_each = var.certificate_contacts
-    content {
-      email = contact.value.email
-      name  = contact.value.name
-      phone = contact.value.phone
-    }
+resource "azurerm_key_vault_certificate_contacts" "email" {
+  for_each = {
+    for certificate_contact in var.certificate_contacts :
+    certificate_contact.email => certificate_contact
+    if certificate_contact.email != null
   }
 
+  contact {
+    email = each.key
+    name  = each.value.name
+    phone = each.value.phone
+  }
+  key_vault_id = one(azurerm_key_vault.this[*].id)
+
   depends_on = [
+    azurerm_key_vault.this,
     azurerm_key_vault_access_policy.many,
   ]
 }

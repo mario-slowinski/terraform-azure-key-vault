@@ -7,7 +7,7 @@ variable "certificate_contacts" {
   description = "One or more contact blocks."
   default = [
     {
-      email = ""
+      email = null
     }
   ]
 }

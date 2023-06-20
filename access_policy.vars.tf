@@ -11,7 +11,7 @@ variable "access_policies" {
   description = "Maximum of 1024 Access Policies per Key Vault."
   default = [
     {
-      object_id = "current"
+      object_id = null
       certificate_permissions = [
         "ManageContacts",
       ]

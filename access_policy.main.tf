@@ -2,6 +2,7 @@ resource "azurerm_key_vault_access_policy" "many" {
   for_each = {
     for access_policy in var.access_policies :
     access_policy.object_id => access_policy
+    if access_policy.object_id != null
   }
 
   key_vault_id            = one(azurerm_key_vault.this[*].id)

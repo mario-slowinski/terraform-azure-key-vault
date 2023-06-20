@@ -1,38 +1,49 @@
-variable "certificate_pem" {
-  type        = string
-  description = "Certificate in PEM format."
-  default     = null
-}
-
-variable "private_key_pem" {
-  type        = string
-  description = "Private key in PEM format."
-  default     = null
-  sensitive   = true
-}
-
-variable "certificate_name" {
-  type        = string
-  description = "Specifies the name of the Key Vault Certificate."
-  default     = null
-}
-
-variable "certs" {
-  type        = string
-  description = "Directory where save TLS keys and certificates."
-  default     = "files"
-}
-
-variable "content_type" {
-  type        = string
-  description = "Certificate type"
-  default     = "application/x-pem-file"
+variable "certificates" {
+  type = list(object({
+    content_type = string           # Certificate type
+    contents     = string           # Certificate contents (key in pkcs8 and crt in PEM) or path to PFX file
+    key_properties = object({       # Map of key arguments.
+      curve      = optional(string) # Specifies the curve to use when creating an EC key.
+      exportable = bool             # Is this certificate exportable?
+      key_size   = optional(number) # The size of the key used in the certificate.
+      key_type   = string           # Specifies the type of key.
+      reuse_key  = bool             # Is the key reusable?
+    })
+    key_vault_id = string               # The ID of the Key Vault where the Certificate should be created.
+    lifetime_action = optional(object({ # Map of lifetime_action arguments.
+      action = object({                 # A action block
+        action_type = string            #  The Type of action to be performed when the lifetime trigger is triggered.
+      })
+      trigger = object({                       # A trigger block.
+        days_before_expiry  = optional(number) #  The number of days before the Certificate expires that the action associated with this Trigger should run.
+        lifetime_percentage = optional(number) # The percentage at which during the Certificates Lifetime the action associated with this Trigger should run.
+      })
+    }))
+    name = string # Specifies the name of the Key Vault Certificate.
+    tags = optional(map(string))
+  }))
+  default = [
+    {
+      name         = null
+      content_type = null
+      contents     = null
+      key_properties = {
+        exportable = null
+        key_type   = null
+        reuse_key  = null
+      }
+      key_vault_id = null
+    },
+  ]
   validation {
-    condition     = contains(["application/x-pem-file", "application/x-pkcs12"], var.content_type)
+    condition     = length(setintersection(["application/x-pem-file", "application/x-pkcs12"], var.certificates[*].content_type)) > 0
     error_message = "Possible values: application/x-pem-file, application/x-pkcs12"
   }
 }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
 variable "key_properties" {
   type = object({
     curve      = optional(string) # Specifies the curve to use when creating an EC key.
@@ -41,19 +52,12 @@ variable "key_properties" {
     key_type   = string           # Specifies the type of key.
     reuse_key  = bool             # Is the key reusable?
   })
-  description = "Map of key arguments."
   default = {
-    exportable = null
-    key_type   = null
-    reuse_key  = null
-  }
-}
-
-variable "lifetime_action" {
-  type        = map(string)
-  description = "Map of lifetime_action arguments."
-  default = {
-    action_type        = "EmailContacts"
-    days_before_expiry = 14
+    action = {
+      action_type = "EmailContacts"
+    }
+    trigger = {
+      days_before_expiry = 14
+    }
   }
 }

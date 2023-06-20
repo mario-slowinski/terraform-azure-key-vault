@@ -1,18 +1,18 @@
-  count = var.key_vault_id != null ? 1 : 0
 resource "azurerm_key_vault_certificate" "imported" {
+  for_each = {
+    for certificate in var.certificates :
+    certificate.name => certificate
+    if certificate.name != null && certificate.key_vault_id != null
+  }
 
-  name         = var.certificate_name
-  key_vault_id = var.key_vault_id
+  name         = each.key
+  key_vault_id = each.value.key_vault_id
 
   certificate {
-    contents = var.content_type == "application/x-pem-file" ? (
-      join("", [
-        var.private_key_pem,
-        var.certificate_pem,
-        ]
-      )
+    contents = each.value.content_type == "application/x-pem-file" ? (
+      each.value.contents
       ) : (
-      filebase64("${path.root}/${var.certs}/${var.certificate_name}.pfx")
+      filebase64(each.value.contents)
     )
     password = random_password.pfx.result
   }
@@ -22,11 +22,11 @@ resource "azurerm_key_vault_certificate" "imported" {
       name = "Self"
     }
     key_properties {
-      curve      = var.key_properties.curve
-      exportable = var.key_properties.exportable
-      key_type   = var.key_properties.key_type
-      key_size   = var.key_properties.key_size
-      reuse_key  = var.key_properties.reuse_key
+      curve      = each.value.key_properties.curve
+      exportable = each.value.key_properties.exportable
+      key_type   = each.value.key_properties.key_type
+      key_size   = each.value.key_properties.key_size
+      reuse_key  = each.value.key_properties.reuse_key
     }
     lifetime_action {
       action {
@@ -37,9 +37,9 @@ resource "azurerm_key_vault_certificate" "imported" {
       }
     }
     secret_properties {
-      content_type = var.content_type
+      content_type = each.value.content_type
     }
   }
 
-  tags = merge(local.tags, var.tags)
+  tags = merge(local.tags, var.tags, each.value.tags)
 }

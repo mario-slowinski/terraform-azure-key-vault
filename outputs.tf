@@ -6,5 +6,5 @@ output "data" {
 
 output "certificate" {
   description = "The certificate"
-  value       = one(azurerm_key_vault_certificate.this[*])
+  value       = one(azurerm_key_vault_certificate.imported[*])
 }

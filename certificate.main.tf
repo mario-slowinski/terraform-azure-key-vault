@@ -1,5 +1,5 @@
-resource "azurerm_key_vault_certificate" "this" {
   count = var.key_vault_id != null ? 1 : 0
+resource "azurerm_key_vault_certificate" "imported" {
 
   name         = var.certificate_name
   key_vault_id = var.key_vault_id

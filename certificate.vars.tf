@@ -9,7 +9,7 @@ variable "certificates" {
       key_type   = string           # Specifies the type of key.
       reuse_key  = bool             # Is the key reusable?
     })
-    key_vault_id = string               # The ID of the Key Vault where the Certificate should be created.
+    key_vault_id = optional(string)     # The ID of the Key Vault where the Certificate should be created. Use the one from this module if set to null
     lifetime_action = optional(object({ # Map of lifetime_action arguments.
       action = object({                 # A action block
         action_type = string            #  The Type of action to be performed when the lifetime trigger is triggered.
@@ -26,7 +26,7 @@ variable "certificates" {
   default = [
     {
       name         = null
-      content_type = null
+      content_type = "application/x-pem-file"
       contents     = null
       key_properties = {
         exportable = null

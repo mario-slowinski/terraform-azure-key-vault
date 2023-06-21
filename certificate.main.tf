@@ -2,11 +2,11 @@ resource "azurerm_key_vault_certificate" "imported" {
   for_each = {
     for certificate in var.certificates :
     certificate.name => certificate
-    if certificate.name != null && certificate.key_vault_id != null
+    if certificate.name != null && certificate.contents != null
   }
 
   name         = each.key
-  key_vault_id = each.value.key_vault_id
+  key_vault_id = coalesce(each.value.key_vault_id, one(azurerm_key_vault.this[*].id))
 
   certificate {
     contents = each.value.content_type == "application/x-pem-file" ? (

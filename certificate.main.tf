@@ -14,7 +14,7 @@ resource "azurerm_key_vault_certificate" "imported" {
       ) : (
       filebase64(each.value.contents)
     )
-    password = random_password.pfx.result
+    password = each.value.password
   }
 
   certificate_policy {

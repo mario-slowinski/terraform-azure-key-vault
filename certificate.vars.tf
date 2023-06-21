@@ -19,8 +19,9 @@ variable "certificates" {
         lifetime_percentage = optional(number) # The percentage at which during the Certificates Lifetime the action associated with this Trigger should run.
       })
     }))
-    name = string # Specifies the name of the Key Vault Certificate.
-    tags = optional(map(string))
+    name     = string           # Specifies the name of the Key Vault Certificate.
+    password = optional(string) # PFX file password
+    tags     = optional(map(string))
   }))
   default = [
     {
@@ -41,18 +42,6 @@ variable "certificates" {
   }
 }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-variable "key_properties" {
-  type = object({
-    curve      = optional(string) # Specifies the curve to use when creating an EC key.
-    exportable = bool             # Is this certificate exportable?
-    key_size   = optional(number) # The size of the key used in the certificate.
-    key_type   = string           # Specifies the type of key.
-    reuse_key  = bool             # Is the key reusable?
-=======
 variable "certificate__lifetime_action" {
   type = object({          # Map of lifetime_action arguments.
     action = object({      # A action block
@@ -62,7 +51,6 @@ variable "certificate__lifetime_action" {
       days_before_expiry  = optional(number) #  The number of days before the Certificate expires that the action associated with this Trigger should run.
       lifetime_percentage = optional(number) # The percentage at which during the Certificates Lifetime the action associated with this Trigger should run.
     })
->>>>>>> Stashed changes
   })
   default = {
     action = {

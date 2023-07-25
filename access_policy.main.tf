@@ -5,8 +5,8 @@ resource "azurerm_key_vault_access_policy" "many" {
     if access_policy.object_id != null
   }
 
-  key_vault_id            = one(azurerm_key_vault.this[*].id)
-  tenant_id               = one(azurerm_key_vault.this[*].tenant_id)
+  key_vault_id            = azurerm_key_vault.name[local.name].id
+  tenant_id               = azurerm_key_vault.name[local.name].tenant_id
   object_id               = replace(each.key, "current", data.azurerm_client_config.current.object_id)
   application_id          = each.value.application_id
   certificate_permissions = each.value.certificate_permissions
@@ -15,6 +15,6 @@ resource "azurerm_key_vault_access_policy" "many" {
   storage_permissions     = each.value.storage_permissions
 
   depends_on = [
-    azurerm_key_vault.this,
+    azurerm_key_vault.name,
   ]
 }

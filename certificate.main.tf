@@ -6,7 +6,7 @@ resource "azurerm_key_vault_certificate" "imported" {
   }
 
   name         = each.key
-  key_vault_id = coalesce(each.value.key_vault_id, one(azurerm_key_vault.this[*].id))
+  key_vault_id = coalesce(each.value.key_vault_id, azurerm_key_vault.name[local.name].id)
 
   certificate {
     contents = each.value.content_type == "application/x-pem-file" ? (

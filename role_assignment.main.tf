@@ -5,7 +5,7 @@ resource "azurerm_role_assignment" "many" {
     if role_assignment.principal_id != ""
   }
 
-  scope                                  = one(azurerm_key_vault.this[*].id)
+  scope                                  = azurerm_key_vault.name[local.name].id
   role_definition_id                     = each.value.role_definition_id
   role_definition_name                   = each.value.role_definition_name
   principal_id                           = each.key
@@ -16,6 +16,6 @@ resource "azurerm_role_assignment" "many" {
   skip_service_principal_aad_check       = each.value.skip_service_principal_aad_check
 
   depends_on = [
-    azurerm_key_vault.this,
+    azurerm_key_vault.name,
   ]
 }

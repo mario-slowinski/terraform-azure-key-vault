@@ -1,7 +1,7 @@
-resource "azurerm_key_vault" "this" {
-  count = var.location != null ? 1 : 0
+resource "azurerm_key_vault" "name" {
+  for_each = { for name in [var.name] : local.name => var.location }
 
-  name                            = coalesce(var.name, local.name)
+  name                            = local.name
   location                        = var.location
   resource_group_name             = var.resource_group_name
   sku_name                        = var.sku_name

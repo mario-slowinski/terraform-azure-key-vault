@@ -14,6 +14,6 @@ resource "azurerm_key_vault_certificate_contacts" "email" {
 
   depends_on = [
     azurerm_key_vault.name,
-    azurerm_key_vault_access_policy.many,
+    azurerm_key_vault_access_policy.object_id,
   ]
 }

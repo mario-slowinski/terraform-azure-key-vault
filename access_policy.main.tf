@@ -1,4 +1,4 @@
-resource "azurerm_key_vault_access_policy" "many" {
+resource "azurerm_key_vault_access_policy" "object_id" {
   for_each = {
     for access_policy in var.access_policies :
     access_policy.object_id => access_policy
@@ -7,7 +7,7 @@ resource "azurerm_key_vault_access_policy" "many" {
 
   key_vault_id            = azurerm_key_vault.name[local.name].id
   tenant_id               = azurerm_key_vault.name[local.name].tenant_id
-  object_id               = replace(each.key, "current", data.azurerm_client_config.current.object_id)
+  object_id               = each.key
   application_id          = each.value.application_id
   certificate_permissions = each.value.certificate_permissions
   key_permissions         = each.value.key_permissions

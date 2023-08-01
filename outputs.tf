@@ -1,5 +1,5 @@
 output "data" {
   description = "The key vault data."
-  value       = azurerm_key_vault.name[local.name]
+  value       = try(azurerm_key_vault.name[local.name], null)
   sensitive   = false
 }

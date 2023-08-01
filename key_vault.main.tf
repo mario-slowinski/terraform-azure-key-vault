@@ -1,5 +1,5 @@
 resource "azurerm_key_vault" "name" {
-  for_each = { for name in [var.name] : local.name => var.location }
+  for_each = { for name in [var.name] : local.name => var.location if name != null }
 
   name                            = local.name
   location                        = var.location

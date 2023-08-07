@@ -10,7 +10,7 @@ resource "azurerm_key_vault_certificate_contacts" "email" {
     name  = each.value.name
     phone = each.value.phone
   }
-  key_vault_id = azurerm_key_vault.name[local.name].id
+  key_vault_id = azurerm_key_vault.name[var.name].id
 
   depends_on = [
     azurerm_key_vault.name,

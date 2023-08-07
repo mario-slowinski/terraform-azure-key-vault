@@ -5,8 +5,8 @@ resource "azurerm_key_vault_access_policy" "object_id" {
     if access_policy.object_id != null
   }
 
-  key_vault_id            = azurerm_key_vault.name[local.name].id
-  tenant_id               = azurerm_key_vault.name[local.name].tenant_id
+  key_vault_id            = azurerm_key_vault.name[var.name].id
+  tenant_id               = azurerm_key_vault.name[var.name].tenant_id
   object_id               = each.key
   application_id          = each.value.application_id
   certificate_permissions = each.value.certificate_permissions

@@ -5,7 +5,7 @@ resource "azurerm_role_assignment" "many" {
     if role_assignment.principal_id != ""
   }
 
-  scope                                  = azurerm_key_vault.name[local.name].id
+  scope                                  = azurerm_key_vault.name[var.name].id
   role_definition_id                     = each.value.role_definition_id
   role_definition_name                   = each.value.role_definition_name
   principal_id                           = each.key

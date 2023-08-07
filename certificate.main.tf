@@ -6,7 +6,7 @@ resource "azurerm_key_vault_certificate" "imported" {
   }
 
   name         = each.key
-  key_vault_id = coalesce(each.value.key_vault_id, try(azurerm_key_vault.name[local.name].id, null))
+  key_vault_id = coalesce(each.value.key_vault_id, try(azurerm_key_vault.name[var.name].id, null))
 
   certificate {
     contents = each.value.content_type == "application/x-pem-file" ? (
@@ -45,5 +45,5 @@ resource "azurerm_key_vault_certificate" "imported" {
     }
   }
 
-  tags = merge(local.tags, var.tags, each.value.tags)
+  tags = merge(var.tags, each.value.tags)
 }

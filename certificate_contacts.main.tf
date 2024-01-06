@@ -7,8 +7,8 @@ resource "azurerm_key_vault_certificate_contacts" "email" {
 
   contact {
     email = each.key
-    name  = each.value.name
-    phone = each.value.phone
+    name  = each.value.name != "" ? each.value.name : null
+    phone = each.value.phone != "" ? each.value.phone : null
   }
   key_vault_id = azurerm_key_vault.name[var.name].id
 

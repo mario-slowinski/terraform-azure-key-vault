@@ -1,5 +1,7 @@
-resource "azurerm_key_vault_certificate_contacts" "list" {
-  key_vault_id = azurerm_key_vault.name[var.name].id
+resource "azurerm_key_vault_certificate_contacts" "key-vault" {
+  for_each = var.name != null ? toset([var.name]) : toset([])
+
+  key_vault_id = azurerm_key_vault.name[each.value].id
 
   dynamic "contact" {
     for_each = {

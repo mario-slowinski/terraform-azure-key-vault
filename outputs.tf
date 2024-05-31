@@ -1,3 +1,9 @@
+output "id" {
+  description = "The key vault id."
+  value       = try(azurerm_key_vault.name[var.name].id, null)
+  sensitive   = false
+}
+
 output "data" {
   description = "The key vault data."
   value       = try(azurerm_key_vault.name[var.name], null)

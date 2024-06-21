@@ -2,7 +2,7 @@ resource "azurerm_key_vault_certificate" "imported" {
   for_each = {
     for certificate in var.certificates :
     certificate.name => certificate
-    if certificate.name != null && certificate.contents != null
+    if certificate.name != null
   }
 
   name         = each.key
